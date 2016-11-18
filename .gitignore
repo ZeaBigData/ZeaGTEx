@@ -2,6 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-.largedata
-.slurm-log
-.slurm-scripts
+largedata
+slurm-log
+slurm-scripts
