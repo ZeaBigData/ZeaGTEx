@@ -1,14 +1,18 @@
 
-checksra <- function(info=rs, Gb=100){
+checksra <- function(info=rs, Gb=100, cols=c("submission", "sample", "experiment")){
   
   info$bases <- as.numeric(info$bases)
   #info <- subset(info, bases > Gb*1000000)
   #pro <- length(unique(info$BioProject))
-  res <- info[, c("submission", "study", "sample", "experiment", "run","run_date","updated_date","bases",
-                  "run_alias", "platform", "study_title", "sample_alias","submission_center","submission_lab")]
-  tab <- ddply(res, .(submission, updated_date, submission_center), summarise,
+  #res <- info[, c("submission", "study", "sample", "experiment", "run","run_date","updated_date","bases",
+  #                "run_alias", "platform", "study_title", "sample_alias","submission_center","submission_lab")]
+  tab <- ddply(info, .(study), summarise,
                tot = round(sum(bases)/1000000000, 0))
-  tab <- tab[order(tab$updated_date, decreasing = TRUE),]
+  ures <- info[!duplicated(info$study), ]
+  
+  tab <- merge(tab, ures[, c("study", "updated_date", cols)], by="study")
+  
+  tab <- tab[order(tab$tot, decreasing = TRUE),]
   tab$year <- gsub("-.*", "", tab$updated_date)
   #tab <- ddply(info, su)
   message(sprintf("###>>> tot submission [ %s ] and [ %s ] > %s Gb", 
