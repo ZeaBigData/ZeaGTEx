@@ -11,4 +11,9 @@ TODO
 2. eQTL/GWAS/epistasis studies across multiple tissues with above data.
 3. Phenotypic GWAS for the above diversity panels.
 4. Incorporating expression data for GWAS.
+5. VCAP by different expression categories, i.e. expression levels, tissues, splicing, chromatin status, etc.
 
+
+## Delivery
+1. Counts on different version of maize genomes (v3 and v4).
+2. Shiny app or d3 data visulization tools for easy access and data query.
