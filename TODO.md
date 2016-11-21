@@ -10,4 +10,5 @@ TODO
 1. count RNA-seq reads using [kallisto](https://pachterlab.github.io/kallisto/) for three diversity populations (http://zeabigdata.org/2016/11/RNA-seq-diversity/). 
 2. eQTL/GWAS/epistasis studies across multiple tissues with above data.
 3. Phenotypic GWAS for the above diversity panels.
+4. Incorporating expression data for GWAS.
 
