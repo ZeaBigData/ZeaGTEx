@@ -3,23 +3,23 @@
 ### Download run data
 
 
-rtb <- read.delim("data/Liu_etal_2013_PNAS_sratable.txt", header=TRUE)
+files <- list.files(path="/oasis/scratch/comet/jyang21/temp_project/largeIO", pattern="sra$")
 #c('submission','study','sample','experiment')
-sum(rtb$MBases_l)
+df <- data.frame(file=files, id=1:length(files))
 
-sra <- data.frame(SRR=rtb$Run_s,
-                  sid=rtb$Sample_Name_s,
-                  pid=rtb$tissue_s)
+
 
 source("lib/set_slurm_arrayjob.R")
-source("lib/run_ascp.R")
-run_aspera(sra[2:10,], maxspeed="100m", outdir="/oasis/scratch/comet/$USER/temp_project/largeIO",
-           arrayjobs="1-9", jobid="aspera", email="yangjl0930@gmail.com",
-           runinfo=c(FALSE, "compute", "1", "90"))
+source("lib/run_fq_dump.R")
+
+run_fq_dump(df, filepath="/oasis/scratch/comet/jyang21/temp_project/largeIO",
+            rmsra=TRUE, gzip=TRUE, email="yangjl0930@gmail.com",
+            runinfo=c(FALSE, "bigmemh", "1", "90"))
 
 
 
+### build kallisto idex
+# kallisto index -i Zea_mays.AGPv4.cdna.all.kallisto.idx Zea_mays.AGPv4.cdna.all.fa.gz
 
-
-
+# kallisto quant -i ~/dbcenter/AGP/AGPv4/Zea_mays.AGPv4.cdna.all.kallisto.idx -o . -b 100 SRR611806.sra_1.fastq SRR611806.sra_2.fastq > test.txt
 

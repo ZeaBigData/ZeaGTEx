@@ -4,7 +4,8 @@
 #'
 #' see more detail about fastq-dump with Aspera downloading:
 #' \url{https://www.ncbi.nlm.nih.gov/books/NBK158900/}
-#'
+#' 
+#' @param df Input SRA files, [data.table, col: file]
 #' @param filepath The absolute path of the SRA files.
 #' @param slurmsh File name of the output shell command.
 #' @param rmsra Remove the original SRA file after dumpping.
@@ -24,61 +25,34 @@
 #' run_fq_dump2(filepath="test", rmsra=TRUE, gzip=TRUE, email=NULL, run=c(TRUE, "bigmemh", "8196", "1"))
 #'
 #' @export
-run_fq_dump <- function(filepath="/group/jrigrp4/BS_teo20/WGBS",
-                        slurmsh="slurm-script/dump_WGBS.sh",
-                        rmsra=TRUE, email=NULL){
+run_fq_dump <- function(df, filepath,
+                        rmsra=TRUE, gzip=TRUE, email=NULL,
+                        runinfo=c(TRUE, "bigmemh", "1", "90")){
   
-  files <- list.files(path=filepath, pattern="sra$")
-  mysh <- paste("cd", filepath)
-  for(i in 1:length(files)){
-    out <- paste("fastq-dump --split-spot --split-3 -A", files[i])
-    mysh <- c(mysh, out)
-  }
-  if(rmsra){
-    mysh <- c(mysh, "rm *sra")
-  }
-  ### set up a single node job
+  #files <- list.files(path=filepath, pattern="sra$")
   dir.create("slurm-script", showWarnings = FALSE)
-  set_farm_job(slurmsh=slurmsh, shcode=mysh,
-               wd=NULL, jobid="dump", email=email)
-}
-
-#' @rdname run_fq_dump
-#' @export
-run_fq_dump2 <- function(filepath="/group/jrigrp4/BS_teo20/WGBS",
-                         rmsra=TRUE, gzip=TRUE, email=NULL,
-                         run=c(TRUE, "bigmemh", "8196", "1")){
-  
-  files <- list.files(path=filepath, pattern="sra$")
-  dir.create("slurm-script", showWarnings = FALSE)
-  for(i in 1:length(files)){
+  for(i in 1:nrow(df)){
     
     shid <- paste0("slurm-script/run_dump_", i, ".sh")
     cmd1 <- paste0("cd ", filepath)
-    cmd2 <- paste0("fastq-dump --split-spot --split-3 -A ", files[i])
+    cmd2 <- paste0("fastq-dump --split-spot --split-3 -A ", df$file[i])
     cmd <- c(cmd1, cmd2)
     if(rmsra){
-      cmd3 <- paste0("rm ", files[i])
+      cmd3 <- paste0("rm ", df$file[i])
       cmd <- c(cmd, cmd3)
     }
     if(gzip){
-      cmd4 <- paste0("gzip ", paste0(files[i], "_1.fastq"))
-      cmd5 <- paste0("gzip ", paste0(files[i], "_2.fastq"))
+      cmd4 <- paste0("gzip ", paste0(df$file[i], "_1.fastq"))
+      cmd5 <- paste0("gzip ", paste0(df$file[i], "_2.fastq"))
       cmd <- c(cmd, cmd4, cmd5)
     }
     cat(cmd, file=shid, sep="\n", append=FALSE)
   }
   
   shcode <- paste("sh slurm-script/run_dump_$SLURM_ARRAY_TASK_ID.sh", sep="\n")
-  myshid <- "slurm-script/run_dump_array.sh"
+  myshid <- "slurm-script/run_fq-dump_array.sh"
   
   set_array_job(shid=myshid,
-                shcode=shcode, arrayjobs=paste("1", length(files), sep="-"),
-                wd=NULL, jobid="dump", email=email)
-  
-  if(run[1]){
-    runcode <- paste0("sbatch -p ", run[2], " --mem ", run[3], " --ntasks=", run[4], " ", myshid)
-    print(runcode)
-    system(runcode)
-  }
+                shcode=shcode, arrayjobs=paste("1", nrow(df), sep="-"),
+                wd=NULL, jobid="dump", email=email, runinfo = runinfo)
 }
