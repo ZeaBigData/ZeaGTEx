@@ -11,7 +11,11 @@ sra <- data.frame(SRR=rtb$Run_s,
                   sid=rtb$Sample_Name_s,
                   pid=rtb$tissue_s)
 
-run_aspera(sra[1:2,], maxspeed="100m", outdir=".", arrayjobs="1-2", jobid="aspera", email=NULL)
+source("lib/set_slurm_arrayjob.R")
+source("lib/run_ascp.R")
+run_aspera(sra[2:10,], maxspeed="100m", outdir="/oasis/scratch/comet/$USER/temp_project/largeIO",
+           arrayjobs="1-9", jobid="aspera", email="yangjl0930@gmail.com",
+           runinfo=c(TRUE, "bigmemh", "1", "90"))
 #'
 
 tab <- out[order(out$tot, out$year, decreasing = TRUE),]

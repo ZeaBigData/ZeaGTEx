@@ -3,5 +3,5 @@
 .RData
 .Ruserdata
 largedata
-slurm-log
-slurm-scripts
+slurm-log/
+slurm-script/

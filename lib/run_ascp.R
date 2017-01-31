@@ -25,11 +25,13 @@
 #' @export
 run_aspera <- function(sra,
                        maxspeed="200m",
-                       outdir="."
+                       outdir=".",
+                       arrayjobs="1-2", jobid="aspera", email=NULL,
+                       runinfo=c(TRUE, "bigmemh", "1", "90")
                        ){
   
   # create dir if not exist
-  # dir.create("slurm-script", showWarnings = FALSE)
+  dir.create("slurm-script", showWarnings = FALSE)
   for(i in 1:nrow(sra)){
     shid <- paste0("slurm-script/run_aspera_", i, ".sh")
     # ascp root: vog.hin.mln.ibcn.ptf@ptfnona:
@@ -50,4 +52,10 @@ run_aspera <- function(sra,
                   id1, "/", id2, "/", sraid,"/", sraid, ".sra ", outdir)
     cat(cmd, file=shid, sep="\n", append=FALSE)
   }
+  
+  #source("lib/set_slurm_arrayjob")
+  shcode <- paste("sh slurm-script/run_aspera_$SLURM_ARRAY_TASK_ID.sh", sep="\n")
+  set_array_job(shid="slurm-script/run_aspera_array.sh",
+                shcode=shcode, arrayjobs=arrayjobs,
+                wd=NULL, jobid=jobid, email=email, runinfo=runinfo)
 }
