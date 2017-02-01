@@ -21,5 +21,5 @@ run_fq_dump(df, filepath="/oasis/scratch/comet/jyang21/temp_project/largeIO",
 ### build kallisto idex
 # kallisto index -i Zea_mays.AGPv4.cdna.all.kallisto.idx Zea_mays.AGPv4.cdna.all.fa.gz
 
-# kallisto quant -i ~/dbcenter/AGP/AGPv4/Zea_mays.AGPv4.cdna.all.kallisto.idx -o . -b 100 SRR611806.sra_1.fastq SRR611806.sra_2.fastq > test.txt
+# kallisto quant -i ~/dbcenter/AGP/AGPv4/Zea_mays.AGPv4.cdna.all.kallisto.idx --plaintext -o . -b 100 SRR611806.sra_1.fastq SRR611806.sra_2.fastq > test.txt
 
