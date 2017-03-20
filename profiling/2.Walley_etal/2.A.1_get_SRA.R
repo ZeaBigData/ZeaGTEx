@@ -1,18 +1,8 @@
 ### Jinliang Yang
-### 01-30-2017
-### Download run data
+### 03-20-2017
+### download Walley et al., 2016 data
 
-
-d <- read.csv("data/Liu_etal_2013_s1.csv", header=TRUE)
-
-plot(1:13, y=d[, 2:14], type="l")
-for(i in 1:nrow(d)){
-  lines(1:13, y=d[i, 2:14])
-}
-
-
-
-
+rtb <- read.delim("data/SraRunTable_walley_etal_2016.txt", header=TRUE)
 #c('submission','study','sample','experiment')
 sum(rtb$MBases_l)
 
@@ -25,10 +15,6 @@ source("lib/run_ascp.R")
 run_aspera(sra[2:10,], maxspeed="100m", outdir="/oasis/scratch/comet/$USER/temp_project/largeIO",
            arrayjobs="1-9", jobid="aspera", email="yangjl0930@gmail.com",
            runinfo=c(FALSE, "compute", "1", "90"))
-
-
-
-
 
 
 
