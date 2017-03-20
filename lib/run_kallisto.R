@@ -5,7 +5,7 @@
 #' see more detail about fastq-dump with Aspera downloading:
 #' \url{https://pachterlab.github.io/kallisto/manual}
 #' 
-#' @param df Input files, [data.table, col: outdir, outfile, fq (SE) or fq1 and fq2 (PE)]
+#' @param df Input files, [data.table, col: outdir, fq (SE) or fq1 and fq2 (PE)]
 #' @param single Single (or PE) end fastq [TRUE(FALSE)]. 
 #' @param l Estimated average fragment length [number, default=200].
 #' @param s Estimated standard deviation of fragment length [number, default=20].
@@ -31,13 +31,13 @@ run_kallisto <- function(df, single=TRUE, l=200, s=20,
   for(i in 1:nrow(df)){
     
     shid <- paste0("slurm-script/run_kquant_", i, ".sh")
-    
+    dir.create(df$outdir[i], showWarnings = FALSE)
     if(single){
       cmd <- paste("kallisto quant -i", idx, "--plaintext -o", df$outdir[i],
-                     "--single -l", l, "-s", s, df$fq[i], ">", df$outfile[i])
+                     "--single -l", l, "-s", s, df$fq[i])
     }else{
       cmd <- paste("kallisto quant -i", idx, "--plaintext -o", df$outdir[i],
-                   df$fq1[i], df$fq2[i], ">", df$outfile[i])
+                   df$fq1[i], df$fq2[i])
     }
     
     cat(cmd, file=shid, sep="\n", append=FALSE)
