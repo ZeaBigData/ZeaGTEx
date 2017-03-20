@@ -23,8 +23,8 @@
 #' @export
 run_kallisto <- function(df, single=TRUE, l=200, s=20,
                          idx="~/dbcenter/AGP/AGPv2/ZmB73_5a_WGS_exons.kallisto.idx",
-                         outdir=".", jobid="run_kquant",
-                        runinfo=c(TRUE, "bigmemh", "1", "8:00:00")){
+                         email=NULL,
+                         jobid="run_kquant", runinfo=c(TRUE, "bigmemh", "1", "8:00:00")){
   
   #files <- list.files(path=filepath, pattern="sra$")
   dir.create("slurm-script", showWarnings = FALSE)

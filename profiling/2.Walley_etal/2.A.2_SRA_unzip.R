@@ -24,6 +24,4 @@ run_fq_dump(df, filepath="~/dbcenter/zeabigdata",
 
 # kallisto quant -i ~/dbcenter/AGP/AGPv4/Zea_mays.AGPv4.cdna.all.kallisto.idx --plaintext -o . -b 100 SRR611806.sra_1.fastq SRR611806.sra_2.fastq > test.txt
 
-### build kallisto idex
-# kallisto index -i ZmB73_5a_WGS_exons.kallisto.idx ZmB73_5a_WGS_exons.fasta.gz
-# kallisto quant -i ~/dbcenter/AGP/AGPv2/ZmB73_5a_WGS_exons.kallisto.idx --plaintext -o . --single -l 200 -s 20 SRR957415.sra.fastq SRR957416.sra.fastq > test.txt
+
