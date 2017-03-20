@@ -30,7 +30,7 @@
 set_array_job <- function(
   shid="largedata/GenSel/CL_test.sh", shcode="sh largedata/myscript.sh",
   arrayjobs="1-700", wd=NULL, jobid="myjob", email=NULL,
-  runinfo=c(TRUE, "bigmemh", "1", "90")  ){
+  runinfo=c(TRUE, "bigmemh", "1", "8:00:00")  ){
 
     #message(sprintf("###>>> cp from Introgression, tailored for pvpDiallel"))
     ##### setup working directory
@@ -65,7 +65,7 @@ set_array_job <- function(
 
     #### the sbatch code
     #runinfo <- get_runinfo(runinfo)
-    runcode <- paste0("sbatch -p ", runinfo[2], " --ntasks=", runinfo[3], " -t ", runinfo[4], " ", shid)
+    runcode <- paste0("sbatch -p ", runinfo[2], " --ntasks=", runinfo[3], " --time=", runinfo[4], " ", shid)
 
     #### attach some sh scripts
     cat(shcode, file=shid, sep="\n", append=TRUE)
