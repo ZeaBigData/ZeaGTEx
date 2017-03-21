@@ -22,7 +22,6 @@ run_kallisto(df, single=TRUE, l=200, s=20,
              email="yangjl0930@gmail.com",
              jobid="run_kquant", runinfo=c(FALSE, "bigmemm", "1", "8:00:00"))
 
-
 ###>>> In this path: cd /home/jolyang/Documents/Github/ZeaGTEx
 ###>>> RUN: sbatch -p bigmemm --ntasks=1 --time=8:00:00 slurm-script/run_kquant_array.sh
 
