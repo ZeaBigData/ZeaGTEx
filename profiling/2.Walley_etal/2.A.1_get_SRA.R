@@ -23,3 +23,8 @@ run_aspera(sra[1:9,], maxspeed="100m", outdir="/home/jolyang/dbcenter/zeabigdata
 ###>>> In this path: cd /home/jolyang/Documents/Github/ZeaGTEx
 ###>>> RUN: sbatch -p serial --ntasks=1 --time=12:00:00 slurm-script/run_aspera_array.sh
 
+run_aspera(sra[10:nrow(sra),], maxspeed="10m", outdir="/home/jolyang/dbcenter/zeabigdata",
+           arrayjobs="1-59", jobid="aspera", email="yangjl0930@gmail.com",
+           runinfo=c(FALSE, "serial", "1", "12:00:00"))
+###>>> In this path: cd /home/jolyang/Documents/Github/ZeaGTEx
+###>>> RUN: sbatch -p serial --ntasks=1 --time=12:00:00 slurm-script/run_aspera_array.sh

@@ -7,6 +7,7 @@
 #' 
 #' @param df Input SRA files, [data.table, col: file]
 #' @param filepath The absolute path of the SRA files.
+#' @param single Single end or not. [Default=TRUE]
 #' @param slurmsh File name of the output shell command.
 #' @param rmsra Remove the original SRA file after dumpping.
 #' @param email Your email address that farm will email to once the job was done/failed.
@@ -25,7 +26,7 @@
 #' run_fq_dump2(filepath="test", rmsra=TRUE, gzip=TRUE, email=NULL, run=c(TRUE, "bigmemh", "8196", "1"))
 #'
 #' @export
-run_fq_dump <- function(df, filepath,
+run_fq_dump <- function(df, filepath, single=TRUE,
                         rmsra=TRUE, gzip=TRUE, email=NULL,
                         runinfo=c(TRUE, "bigmemh", "1", "90")){
   
@@ -42,9 +43,15 @@ run_fq_dump <- function(df, filepath,
       cmd <- c(cmd, cmd3)
     }
     if(gzip){
-      cmd4 <- paste0("gzip ", paste0(df$file[i], "_1.fastq"))
-      cmd5 <- paste0("gzip ", paste0(df$file[i], "_2.fastq"))
-      cmd <- c(cmd, cmd4, cmd5)
+      if(single){
+        cmd4 <- paste0("gzip ", paste0(df$file[i], ".fastq"))
+        cmd <- c(cmd, cmd4)
+      }else{
+        cmd4 <- paste0("gzip ", paste0(df$file[i], "_1.fastq"))
+        cmd5 <- paste0("gzip ", paste0(df$file[i], "_2.fastq"))
+        cmd <- c(cmd, cmd4, cmd5)
+      }
+      
     }
     cat(cmd, file=shid, sep="\n", append=FALSE)
   }

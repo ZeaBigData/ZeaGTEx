@@ -12,9 +12,9 @@ df <- data.frame(file=files, id=1:length(files))
 source("lib/set_slurm_arrayjob.R")
 source("lib/run_fq_dump.R")
 
-run_fq_dump(df, filepath="~/dbcenter/zeabigdata",
+run_fq_dump(df, filepath="~/dbcenter/zeabigdata", single=TRUE,
             rmsra=TRUE, gzip=TRUE, email="yangjl0930@gmail.com",
-            runinfo=c(FALSE, "serial", "1", "90"))
+            runinfo=c(FALSE, "serial", "1", "12:00:00"))
 
 ###>>> In this path: cd /home/jolyang/Documents/Github/ZeaGTEx
 ###>>> RUN: sbatch -p serial --ntasks=1 --time=12:00:00 slurm-script/run_fq-dump_array.sh
