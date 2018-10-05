@@ -10,9 +10,9 @@ source("lib/set_slurm_arrayjob.R")
 source("lib/run_kallisto.R")
 
 
-files <- list.files(path="~/dbcenter/zeabigdata", pattern="fastq$", full.names = TRUE)
+files <- list.files(path="~/dbcenter/zeabigdata", pattern="fastq.gz$", full.names = TRUE)
 #c('submission','study','sample','experiment')
-df <- data.frame(fq=files, outdir= paste0("largedata/walley/", gsub(".*\\/|.sra.fastq", "", files)))
+df <- data.frame(fq=files, outdir= paste0("largedata/walley/", gsub(".*\\/|.sra.fastq.gz", "", files)))
 df$outdir <- as.character(df$outdir)
 for(i in 1:nrow(df)) dir.create(df$outdir[i], showWarnings = FALSE)
 
