@@ -19,7 +19,7 @@ file.info("largedata/SRAmetadb.sqlite")
 
 sra_con = dbConnect(SQLite(), sfile)
 
-# list all the tables in teh SQLite database
+# list all the tables in the SQLite database
 sra_tables <- dbListTables(sra_con)
 # There is also the dbListFields function that can list database fields associated with a table.
 dbListFields(sra_con,"experiment")
@@ -43,4 +43,14 @@ dbListFields(sra_con,"submission")
 write.table(rs, "data/sra_maize_11-17-2016.txt", sep="\t", row.names=FALSE, quote=FALSE)
 
 
+###### ----------- ######
+b <- getSRA(search_terms='"zea mays" AND B73 ',
+             out_types=c('sra','submission','study','experiment','sample','run'), 
+             sra_con, acc_only=FALSE)
+bg <- subset(b, library_source == "GENOMIC")
+
+dbListFields(sra_con,"sra")
+dbListFields(sra_con,"submission")
+
+write.table(bg, "data/sra_b73_genomic_10-05-2018.txt", sep="\t", row.names=FALSE, quote=FALSE)
 
